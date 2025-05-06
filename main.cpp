@@ -14,5 +14,6 @@ int main()
     Are we suppose to convert it into drachma here or somewhere in the linked list class.
     */
     list.removeCurrency(0);
+    cout << endl;
     cout << list.stringifyList();
 }
