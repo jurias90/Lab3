@@ -13,22 +13,22 @@ using std::string;
 
 class SinglyLinkedList {
 public:
-    SinglyLinkedList();
+    SinglyLinkedList():count(0), start(nullptr), end(nullptr){};
     ~SinglyLinkedList(){emptyList();};
     void addCurrency(Currency* newCurrency, int index);
     Currency* removeCurrency(Currency* currency);
     Currency* removeCurrency(int index);
-    int findCurrency(Currency* currency);
-    Currency* getCurrency(int index);
+    int findCurrency(Currency* currency) const;
+    Currency* getCurrency(int index) const;
     string stringifyList() const;
     int countCurrency() const{return count;};
     bool isListEmpty() const{return start==nullptr;};
     void emptyList();
 
 private:
-    int count=0;
-    LinkNode *start = nullptr;
-    LinkNode *end = nullptr;
+    int count;
+    LinkNode *start ;
+    LinkNode *end ;
 };
 
 //TODO: Ask the teacher if we are dealing with duplicate two nodes that point to same currency instance.
@@ -79,7 +79,7 @@ inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
         prev = current;
         current = current->next;
         if(current->data->isEqual(*currency)) {
-            Currency* removed = new Currency(*current->data);
+            Currency* removed = current->data;
             prev->next = current->next;
             if(end == current) {
                 end = prev;
@@ -98,7 +98,7 @@ inline Currency* SinglyLinkedList::removeCurrency(int index) {
     LinkNode* current = start;
     LinkNode* prev = nullptr;
     if(index == LIST_STARTING_INDEX) {
-        Currency* removed = new Currency(*current->data);
+        Currency* removed = current->data;
         start = start->next;
         delete current;
         return removed;
@@ -107,7 +107,7 @@ inline Currency* SinglyLinkedList::removeCurrency(int index) {
         prev=current;
         current = current->next;
     }
-    Currency* removed = new Currency(*current->data);
+    Currency* removed = current->data;
     prev->next = current->next;
     if(current == end) {
         end = prev;
@@ -121,7 +121,9 @@ inline int SinglyLinkedList::findCurrency(Currency *currency) const {
     if(start->data->isEqual(*currency)) {
         return index;
     }
+    LinkNode* current = start;
     while(current != nullptr) {
+        current = current->next;
         index++;
         if(current->data->isEqual(*currency)) {
             return index;
@@ -130,9 +132,9 @@ inline int SinglyLinkedList::findCurrency(Currency *currency) const {
         return INDEX_OUT_OF_BOUNDS;
 }
 
-inline Currency *SinglyLinkedList::getCurrency(int index) {
+inline Currency *SinglyLinkedList::getCurrency(int index) const {
     if(index == LIST_STARTING_INDEX) {
-        return new Currency(*start->data);
+        return start->data;
     }
     LinkNode* current = start;
     for(int i = 1; i < index; i++) {
