@@ -7,6 +7,7 @@
 #include "LinkNode.h"
 
 const int LIST_STARTING_INDEX=0;
+const int INDEX_OUT_OF_BOUNDS=-1;
 
 using std::string;
 
@@ -68,29 +69,76 @@ inline void SinglyLinkedList::addCurrency(Currency* newCurrency, int index) {
 inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
     LinkNode* prev = nullptr;
     LinkNode* current = start;
+    if(start->data->isEqual(*currency)) {
+        Currency* removed = current->data;
+        start = start->next;
+        delete current;
+        return removed;
+    }
     while(current != nullptr) {
-        if(current->data->isEqual(*currency)) {
-
-        }
         prev = current;
         current = current->next;
+        if(current->data->isEqual(*currency)) {
+            Currency* removed = new Currency(*current->data);
+            prev->next = current->next;
+            if(end == current) {
+                end = prev;
+            }
+            delete current;
+            count--;
+            return removed;
+        }
     }
 
     return nullptr;
 }
-
-inline Currency* SinglyLinkedList::removeCurrency(int index) {}
-
-
-
-
-
+//TODO: Ask professor if he wants us to throw an exception if the index is out of bounds or return nullptr
+//The message was already sent, just waiting on response.
+inline Currency* SinglyLinkedList::removeCurrency(int index) {
+    LinkNode* current = start;
+    LinkNode* prev = nullptr;
+    if(index == LIST_STARTING_INDEX) {
+        Currency* removed = new Currency(*current->data);
+        start = start->next;
+        delete current;
+        return removed;
+    }
+    for(int i = 1; i < index; i++) {
+        prev=current;
+        current = current->next;
+    }
+    Currency* removed = new Currency(*current->data);
+    prev->next = current->next;
+    if(current == end) {
+        end = prev;
+    }
+    delete current;
+    count--;
+    return removed;
+}
 inline int SinglyLinkedList::findCurrency(Currency *currency) const {
-
+    int index = LIST_STARTING_INDEX;
+    if(start->data->isEqual(*currency)) {
+        return index;
+    }
+    while(current != nullptr) {
+        index++;
+        if(current->data->isEqual(*currency)) {
+            return index;
+        }
+    }
+        return INDEX_OUT_OF_BOUNDS;
 }
 
 inline Currency *SinglyLinkedList::getCurrency(int index) {
-
+    if(index == LIST_STARTING_INDEX) {
+        return new Currency(*start->data);
+    }
+    LinkNode* current = start;
+    for(int i = 1; i < index; i++) {
+        current = current->next;
+    }
+    return current->data;
 }
 
 

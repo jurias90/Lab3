@@ -83,7 +83,7 @@ void DrachmaCurrency::addCurrency(Currency* other) {
 }
 /**
 Method subtractCurrency(otherCurrency) overriden
-    -This method is adds the otherCurrency values to the invoked and makes sure currency does not go negative
+    -This method  adds the otherCurrency values to the invoked and makes sure currency does not go negative
     but checks to make sure the otherCurrency is of the same type as Drachma
     Pre:otherCurrency - a currency object for comparison
     Post: currencyWholeValue - Will be added by the otherCurrencyWholeValue. It will add 1 to this value if fractionValue goes above or equals 100
