@@ -70,7 +70,8 @@ inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
     LinkNode* prev = nullptr;
     LinkNode* current = start;
     if(start->data->isEqual(*currency)) {
-        Currency* removed = current->data;
+        Currency* removed = new DrachmaCurrency(current->data);
+        removed->print();
         start = start->next;
         delete current;
         return removed;
@@ -79,7 +80,9 @@ inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
         prev = current;
         current = current->next;
         if(current->data->isEqual(*currency)) {
-            Currency* removed = current->data;
+            Currency* removed = new DrachmaCurrency(current->data);
+            removed->print();
+            std::cout <<"its here dufus" << std::endl;
             prev->next = current->next;
             if(end == current) {
                 end = prev;
@@ -89,7 +92,7 @@ inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
             return removed;
         }
     }
-
+    std::cout << "It never touched the loop smh";
     return nullptr;
 }
 //TODO: Ask professor if he wants us to throw an exception if the index is out of bounds or return nullptr
@@ -98,7 +101,8 @@ inline Currency* SinglyLinkedList::removeCurrency(int index) {
     LinkNode* current = start;
     LinkNode* prev = nullptr;
     if(index == LIST_STARTING_INDEX) {
-        Currency* removed = current->data;
+        Currency* removed = new DrachmaCurrency(current->data);
+        removed->print();
         start = start->next;
         delete current;
         return removed;
