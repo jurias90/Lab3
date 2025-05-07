@@ -2,64 +2,65 @@
 // Created by jesus on 5/5/2025.
 //
 
-#ifndef SINGLYLINKEDLIST_H
-#define SINGLYLINKEDLIST_H
+#pragma once
 #include "LinkNode.h"
 
-const int LIST_STARTING_INDEX=0;
-const int INDEX_OUT_OF_BOUNDS=-1;
+const int LIST_STARTING_INDEX = 0;
+const int INDEX_OUT_OF_BOUNDS = -1;
 
 using std::string;
 
 class SinglyLinkedList {
 public:
-    SinglyLinkedList():count(0), start(nullptr), end(nullptr){};
-    ~SinglyLinkedList(){emptyList();};
+    SinglyLinkedList() :count(0), start(nullptr), end(nullptr) {};
+    ~SinglyLinkedList() { emptyList(); };
     void addCurrency(Currency* newCurrency, int index);
     Currency* removeCurrency(Currency* currency);
     Currency* removeCurrency(int index);
     int findCurrency(Currency* currency) const;
     Currency* getCurrency(int index) const;
     string stringifyList() const;
-    int countCurrency() const{return count;};
-    bool isListEmpty() const{return start==nullptr;};
+    int countCurrency() const { return count; };
+    bool isListEmpty() const { return start == nullptr; };
     void emptyList();
 
 private:
     int count;
-    LinkNode *start ;
-    LinkNode *end ;
+    LinkNode* start;
+    LinkNode* end;
 };
 
 //TODO: Ask the teacher if we are dealing with duplicate two nodes that point to same currency instance.
 
 
 inline void SinglyLinkedList::addCurrency(Currency* newCurrency, int index) {
+    // throw out of bound error if the new index is > count
+    if (index > count) {
+        throw std::invalid_argument("Out of bound index");
+    }
     LinkNode* newNode = new LinkNode(newCurrency);
     count++;
     //This if statement was made to check if the list is Empty
-    if(isListEmpty()) {
+    if (isListEmpty()) {
         start = end = newNode;
         return;
     }
 
     //This if statement is if the index is at the start of the list.
-    if(index == LIST_STARTING_INDEX) {
+    if (index == LIST_STARTING_INDEX) {
         newNode->next = start;
         start = newNode;
         return;
     }
 
-    //TODO: WHat do i do if the index is greater than the list
-    //This was my solution. Just adding it to the end of the list.
-    if(index >= count) {
+    if (index == count) {
         end->next = newNode;
         end = end->next;
         return;
     }
 
     LinkNode* current = start;
-    for(int i = 0; i < index-1; i++) {
+    for (int i = 0; i < index - 1; i++) {
         current = current->next;
     }
     newNode->next = current->next;
@@ -69,111 +70,136 @@ inline void SinglyLinkedList::addCurrency(Currency* newCurrency, int index) {
 inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
     LinkNode* prev = nullptr;
     LinkNode* current = start;
-    if(start->data->isEqual(*currency)) {
-        Currency* removed = new DrachmaCurrency(current->data);
-        removed->print();
+    Currency* res = nullptr;
+    // simply return if the list is empty
+    if (!count || !start)
+        return nullptr;
+    if (start->data && start->data->isEqual(*currency)) {
+        res = current->data;
+        // list become empty
+        if (end == start)
+            end = nullptr;
         start = start->next;
         delete current;
-        return removed;
+        count--;
+        return res;
     }
-    while(current != nullptr) {
-        prev = current;
-        current = current->next;
-        if(current->data->isEqual(*currency)) {
-            Currency* removed = new DrachmaCurrency(current->data);
-            removed->print();
-            std::cout <<"its here dufus" << std::endl;
+    prev = current;
+    current = current->next;
+    while (current != nullptr) {
+        if (current->data && current->data->isEqual(*currency)) {
+            res = current->data;
             prev->next = current->next;
-            if(end == current) {
+            if (end == current) {
                 end = prev;
             }
             delete current;
             count--;
-            return removed;
+            return res;
         }
+        prev = current;
+        current = current->next;
     }
-    std::cout << "It never touched the loop smh";
-    return nullptr;
+    // doesn't find the item in the list
+    return res;
 }
-//TODO: Ask professor if he wants us to throw an exception if the index is out of bounds or return nullptr
-//The message was already sent, just waiting on response.
+
 inline Currency* SinglyLinkedList::removeCurrency(int index) {
     LinkNode* current = start;
     LinkNode* prev = nullptr;
-    if(index == LIST_STARTING_INDEX) {
-        Currency* removed = new DrachmaCurrency(current->data);
-        removed->print();
+    Currency* res = nullptr;
+    if (index >= count) {
+        return res;
+    }
+    if (index == LIST_STARTING_INDEX) {
+        res = current->data;
+        // list become empty
+        if (end == start)
+            end = nullptr;
         start = start->next;
         delete current;
-        return removed;
+        count--;
+        return res;
     }
-    for(int i = 1; i < index; i++) {
-        prev=current;
+    for (int i = 1; i <= index && current; i++) {
+        prev = current;
         current = current->next;
     }
-    Currency* removed = current->data;
-    prev->next = current->next;
-    if(current == end) {
-        end = prev;
-    }
-    delete current;
-    count--;
-    return removed;
-}
-inline int SinglyLinkedList::findCurrency(Currency *currency) const {
-    int index = LIST_STARTING_INDEX;
-    if(start->data->isEqual(*currency)) {
-        return index;
-    }
-    LinkNode* current = start;
-    while(current != nullptr) {
-        current = current->next;
-        index++;
-        if(current->data->isEqual(*currency)) {
-            return index;
+
+    if (current) {
+        res = current->data;
+        if (prev)
+            prev->next = current->next;
+        if (current == end) {
+            end = prev;
         }
+        delete current;
+        count--;
     }
-        return INDEX_OUT_OF_BOUNDS;
+
+    return res;
 }
 
-inline Currency *SinglyLinkedList::getCurrency(int index) const {
-    if(index == LIST_STARTING_INDEX) {
-        return start->data;
+inline int SinglyLinkedList::findCurrency(Currency* currency) const {
+    int index = LIST_STARTING_INDEX;
+
+    if (!currency)
+        throw std::invalid_argument("NULL currency");
+    if (!start || !count)
+        return INDEX_OUT_OF_BOUNDS;
+    if (start->data->isEqual(*currency)) {
+        return index;
     }
-    LinkNode* current = start;
-    for(int i = 1; i < index; i++) {
+    LinkNode* current = start->next;
+    while (current) {
+        index++;
+        if (current->data->isEqual(*currency)) {
+            return index;
+        }
         current = current->next;
     }
-    return current->data;
+    return INDEX_OUT_OF_BOUNDS;
+}
+
+inline Currency* SinglyLinkedList::getCurrency(int index) const {
+    if (index == LIST_STARTING_INDEX) {
+        return start->data;
+    }
+
+    if (index >= count) {
+        throw std::invalid_argument("Out of bound index");
+    }
+    LinkNode* current = start;
+    for (int i = 1; i <= index && current; i++) {
+        current = current->next;
+    }
+    return current ? current->data : nullptr;
 }
 
 
 inline string SinglyLinkedList::stringifyList() const {
-    if(isListEmpty()) {
+    if (isListEmpty()) {
         return "";
     }
     std::stringstream ss;
     LinkNode* current = start;
-    while(current->next != nullptr) {
-        ss << current->data->toString() << "\t" ;
+    while (current->next != nullptr) {
+        ss << current->data->toString() << "\t";
         current = current->next;
     }
     ss << current->data->toString();
     return ss.str();
 }
+
 inline void SinglyLinkedList::emptyList() {
-    count = 0;
     LinkNode* current = start;
+    LinkNode* nextNode = nullptr;
     while (current != nullptr) {
-        LinkNode* nextNode = current->next;
+        nextNode = current->next;
         delete current;
         current = nextNode;
     }
+    count = 0;
     start = end = nullptr;
 }
 
-
-
-
-
-#endif //SINGLYLINKEDLIST_H

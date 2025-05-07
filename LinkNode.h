@@ -7,9 +7,15 @@
 #include "Currency.h"
 
 struct LinkNode {
-    ~LinkNode() {
-        delete data;
-    };
+    LinkNode() {
+        data = nullptr;
+        next = nullptr;
+    }
+    LinkNode(Currency* newData) {
+        data = newData;
+        next = nullptr;
+    }
+    ~LinkNode() {}
     Currency *data;
     LinkNode *next;
 };

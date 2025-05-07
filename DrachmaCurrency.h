@@ -4,8 +4,7 @@
     Team Memebers: Jesus Urias, Nhung Vo
     Purpose: The purpose of this lab is to properly impolement inheritance and polymorphism as needed.
 **/
-#ifndef DRACHMACURRENCY_H
-#define DRACHMACURRENCY_H
+#pragma once
 
 #include "Currency.h"
 
@@ -59,11 +58,11 @@ public:
 
 
 private:
-       std::string coinName = "Drachma";
+    std::string coinName = "Drachma";
 };
 /**
 Method addCurrency(otherCurrency) overriden
-    -This method is adds the otherCurrency values to the invoked 
+    -This method is adds the otherCurrency values to the invoked
      but checks to make sure the otherCrrency is of the same type as Drachma
     Pre:otherCurrency - a currency object for comparison
     Post: currencyWholeValue - Will be added by the otherCurrencyWholeValue. It will add 1 to this value if fractionValue goes above or equals 100
@@ -71,7 +70,7 @@ Method addCurrency(otherCurrency) overriden
     Return:
     Throws: std::string if the otherCurrency type does not match the Drachma currency type
 **/
-void DrachmaCurrency::addCurrency(Currency* other) {
+inline void DrachmaCurrency::addCurrency(Currency* other) {
     //The purpose of dynamic casting here is to check and see if this currency belongs to Peso Currency. If not
     //it will return undefined which is false to the if statement.
     if (DrachmaCurrency* otherDrachmaCurrency = dynamic_cast<DrachmaCurrency*>(other)) {
@@ -92,7 +91,7 @@ Method subtractCurrency(otherCurrency) overriden
     Throws: std::string if otherCurrency is greater than the invoked currency
             std::string if the otherCurrency type does not match the Drachma currency type
 **/
-void DrachmaCurrency::subtractCurrency(Currency* other) {
+inline void DrachmaCurrency::subtractCurrency(Currency* other) {
     //The purpose of dynamic casting here is to check and see if this currency belongs to Peso Currency. If not
     //it will return undefined which is false to the if statement.
     if (DrachmaCurrency* otherDrachmaCurrency = dynamic_cast<DrachmaCurrency*>(other)) {
@@ -103,4 +102,3 @@ void DrachmaCurrency::subtractCurrency(Currency* other) {
     }
 }
 
-#endif //DRACHMACURRENCY_H
