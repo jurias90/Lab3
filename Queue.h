@@ -1,6 +1,9 @@
-#include "SinglyLinkedList.h"
+#pragma once
+
+#include "Stack.h"
 
 class Queue : public SinglyLinkedList {
+public:
 	Queue() : SinglyLinkedList() {}
 	~Queue() {
 		emptyQueue();

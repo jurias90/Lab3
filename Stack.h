@@ -1,6 +1,9 @@
+#pragma once
+
 #include "SinglyLinkedList.h"
 
 class Stack : public SinglyLinkedList {
+public:
 	Stack() : SinglyLinkedList() {}
 	~Stack() {
 		emptyStack();
@@ -44,3 +47,4 @@ std::string Stack::stringifyStack() {
 void Stack::emptyStack() {
 	emptyList();
 }
+

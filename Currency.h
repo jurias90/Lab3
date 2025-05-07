@@ -5,8 +5,7 @@
     Purpose: The purpose of this lab is to properly impolement inheritance and polymorphism as needed.
 **/
 
-#ifndef CURRENCY_H
-#define CURRENCY_H
+#pragma once
 
 #include <iostream>
 #include <iomanip>
@@ -27,7 +26,7 @@ public:
         fractionalValue = static_cast<unsigned int>(round((value - wholeValue) * 100));
     };
 
-    Currency(const Currency& other) : wholeValue(other.wholeValue),fractionalValue(other.fractionalValue) {};
+    Currency(const Currency& other) : wholeValue(other.wholeValue), fractionalValue(other.fractionalValue) {};
     //Virtual Deconstructor
     virtual ~Currency() {};
 
@@ -44,9 +43,9 @@ public:
     /**
     Method setValue(newValue)
         -The point of this method is to safely save into the private of the class
-        Pre: newValue - the value 
+        Pre: newValue - the value
         Post: value - newValue is saved into value
-        Return: 
+        Return:
     **/
     void setWholeValue(unsigned int newDollarValue) {
         wholeValue = newDollarValue;
@@ -106,13 +105,13 @@ private:
 };
 /**
 Method addCurrency(otherCurrency)
-    -This method is adds the otherCurrency values to the invoked 
+    -This method is adds the otherCurrency values to the invoked
     Pre:otherCurrency - a currency object for comparison
     Post: currencyWholeValue - Will be added by the otherCurrencyWholeValue. It will add 1 to this value if fractionValue goes above or equals 100
           currencyFractionalValue - Will be added by the otherCurrencyFractionalValue. It will subtract 100 from it if it goes above or equals 100
-    Return: 
+    Return:
 **/
-void Currency::addCurrency(Currency* other) {
+inline void Currency::addCurrency(Currency* other) {
     fractionalValue += other->fractionalValue;
     if (fractionalValue >= 100) {
         fractionalValue -= 100;
@@ -129,7 +128,7 @@ Method subtractCurrency(otherCurrency)
     Return:
     Throws: std::string if otherCurrency is greater than the invoked currency
 **/
-void Currency::subtractCurrency(Currency* other) {
+inline void Currency::subtractCurrency(Currency* other) {
 
     if (!isGreater(*other)) {
         throw std::string("Invalid Subtractions: Cannot be Negative Currency");
@@ -144,4 +143,3 @@ void Currency::subtractCurrency(Currency* other) {
     fractionalValue -= other->fractionalValue;
 };
 
-#endif //CURRENCY_H
