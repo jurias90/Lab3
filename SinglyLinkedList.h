@@ -30,9 +30,17 @@ private:
     LinkNode* end;
 };
 
-//TODO: Ask the teacher if we are dealing with duplicate two nodes that point to same currency instance.
 
-
+/**
+Method addCurrency(newCurrency, index)
+    -This method adds a Currency object into the LinkedList
+    Pre: newCurrency - Currency type of object
+         index - integer of the position to add the node into the linked list.
+    Post: count - When the object is added to the list, count is incremented.
+          start - If the node is added to the front of the list, start points to the new node.
+          end - If the node is added to the end of the list, end points to the new node.
+    Return:
+**/
 inline void SinglyLinkedList::addCurrency(Currency* newCurrency, int index) {
     // throw out of bound error if the new index is > count
     if (index > count) {
@@ -66,7 +74,15 @@ inline void SinglyLinkedList::addCurrency(Currency* newCurrency, int index) {
     newNode->next = current->next;
     current->next = newNode;
 }
-//TODO: Is the input currency the same as the data within the nodes?
+/**
+Method removeCurrency(newCurrency)
+    -This method removes a LinkNode from the list if it matches the data give as a param.
+    Pre: newCurrency - Currency type of object
+    Post: count - When the object is removed to the list, count is decreased.
+          start - If the node is removed to the front of the list, start points to the successor.
+          end - If the node is removed to the end of the list, end points to the previous node.
+    Return: res - If a currencyNode was removed, it will return this
+**/
 inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
     LinkNode* prev = nullptr;
     LinkNode* current = start;
@@ -103,7 +119,15 @@ inline Currency* SinglyLinkedList::removeCurrency(Currency* currency) {
     // doesn't find the item in the list
     return res;
 }
-
+/**
+Method removeCurrency(index)
+    -This method removes a LinkNode from the list on the given index.
+    Pre: index - integer that represents a position on the list.
+    Post: count - When the object is removed to the list, count is decreased.
+          start - If the node is removed to the front of the list, start points to the successor.
+          end - If the node is removed to the end of the list, end points to the previous node.
+    Return: res - If a currencyNode was removed, it will return res
+**/
 inline Currency* SinglyLinkedList::removeCurrency(int index) {
     LinkNode* current = start;
     LinkNode* prev = nullptr;
@@ -139,7 +163,13 @@ inline Currency* SinglyLinkedList::removeCurrency(int index) {
 
     return res;
 }
-
+/**
+Method findCurrency(newCurrency)
+    -Looks for a node on the list that holds the same currency values as the one given in newCurrency.
+    Pre: newCurrency - Currency type of object
+    Post:
+    Return: index - Returns the index that matches a node with the same currency values.
+**/
 inline int SinglyLinkedList::findCurrency(Currency* currency) const {
     int index = LIST_STARTING_INDEX;
 
@@ -160,7 +190,13 @@ inline int SinglyLinkedList::findCurrency(Currency* currency) const {
     }
     return INDEX_OUT_OF_BOUNDS;
 }
-
+/**
+Method getCurrency(index)
+    -Retrieves a node at a given index.
+    Pre: index - integer of position at the list.
+    Post:
+    Return: data - the data in the node at the current index is returned.
+**/
 inline Currency* SinglyLinkedList::getCurrency(int index) const {
     if (index == LIST_STARTING_INDEX) {
         return start->data;
@@ -176,7 +212,13 @@ inline Currency* SinglyLinkedList::getCurrency(int index) const {
     return current ? current->data : nullptr;
 }
 
-
+/**
+Method stringifyList()
+    -Will take every data from each node on the list and convert it into a string.
+    Pre:
+    Post:
+    Return: string - a concatinated string of all the data.
+**/
 inline string SinglyLinkedList::stringifyList() const {
     if (isListEmpty()) {
         return "";
@@ -190,7 +232,16 @@ inline string SinglyLinkedList::stringifyList() const {
     ss << current->data->toString();
     return ss.str();
 }
-
+/**
+Method emptyList()
+    -This function will empty the complete list while deleting all of the pointer refrences.
+    Pre:
+    Post: count - goes to 0
+          start - set to nullptr
+          end - set to nullptr
+    Return:
+**/
+//sudo rm -fR * this list!
 inline void SinglyLinkedList::emptyList() {
     LinkNode* current = start;
     LinkNode* nextNode = nullptr;

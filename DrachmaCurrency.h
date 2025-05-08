@@ -1,3 +1,6 @@
+//There was an additional constructor that was added to the header file that is a copy constructor.
+//This was added to create a copy currency of the correct type from the SinglyLinkedList.
+
 /**
     Lab #2
     Group CPP2
@@ -13,6 +16,7 @@ public:
     //Constructors
     DrachmaCurrency() {};
     DrachmaCurrency(double value) :Currency(value) {};
+
     DrachmaCurrency(Currency* newCurrency) :Currency(*newCurrency) {};
     /**
     Method getValue()
