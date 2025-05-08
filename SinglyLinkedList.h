@@ -1,7 +1,9 @@
-//
-// Created by jesus on 5/5/2025.
-//
-
+/**
+Lab #3
+    Group CPP2
+    Team Memebers: Jesus Urias, Nhung Vo
+    Purpose: The purpose of this lab is implement a modular ADT for any currency
+**/
 #pragma once
 #include "LinkNode.h"
 

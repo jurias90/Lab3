@@ -1,3 +1,9 @@
+/**
+Lab #3
+    Group CPP2
+    Team Memebers: Jesus Urias, Nhung Vo
+    Purpose: The purpose of this lab is implement a modular ADT for any currency
+**/
 #include "Queue.h"
 #include "DrachmaCurrency.h"
 using namespace std;
